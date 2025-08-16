@@ -1,0 +1,5 @@
+encryptor-ui/node_modules/
+encryptor-ui/dist/
+*.log
+backend/_build/
+backend/_opam/
