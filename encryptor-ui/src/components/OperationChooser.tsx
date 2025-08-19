@@ -1,4 +1,4 @@
-// import React from 'react';
+import './operation-chooser.css'
 
 type Props = {
   onChoose: (mode: 'encrypt' | 'decrypt') => void;
@@ -20,7 +20,7 @@ function OperationChooser({onChoose} : Props) {
         <div>🔒</div>
         <div>
           <div>Decrypt text</div>
-          <div> Convert cipher back to plain text</div>
+          <div>Convert cipher back to plain text</div>
         </div>
       </button>
     </div>

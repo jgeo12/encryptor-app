@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import './App.css'
+import './app.css'
 import OperationChooser from './components/OperationChooser'
 import EncryptScreen from './components/EncryptScreen'
 import DecryptScreen from './components/DecryptScreen'
