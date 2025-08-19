@@ -1,34 +1,27 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import OperationChooser from './components/OperationChooser'
+import EncryptScreen from './components/EncryptScreen'
+import DecryptScreen from './components/DecryptScreen'
+
+type View = 'home' | 'encrypt' | 'decrypt'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [view, setView] = useState<View>('home')
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div className="app">
+      <header className="app-header">
+        <div>Blowfish Encryptor</div>
+        <div>Secure text encryption and decryption using an 8-digit key and the Blowfish algorithm.</div>
+      </header>
+
+      <main>
+        {view === 'home' && <OperationChooser onChoose={setView} />}
+        {view === 'encrypt' && <EncryptScreen onBack={setView}/>}
+        {view === 'decrypt' && <DecryptScreen onBack={setView}/>}
+      </main>
+    </div>
   )
 }
 
