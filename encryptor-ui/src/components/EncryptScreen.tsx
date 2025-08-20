@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { encryptText } from "../api";
 import { Lock, ArrowLeft, Key, Shield } from 'lucide-react'
-import './encrypt-decrypt-screen.css'
+import './operation-screen.css'
 
 type Props = { onBack: (mode: 'home') => void };
 

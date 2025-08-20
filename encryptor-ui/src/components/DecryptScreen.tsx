@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { decryptText } from "../api";
-import { LockOpen, ArrowLeft, Key, Shield} from 'lucide-react'
+import { LockOpen, ArrowLeft, Key, Shield, CircleCheckBig } from 'lucide-react'
+import './operation-screen.css'
 
 type Props = { onBack: (mode: 'home') => void };
 
@@ -37,6 +38,7 @@ export default function DecryptScreen({onBack}: Props){
 
   	return(
 		<div className="encrypt-decrypt-screen">
+
         	<div className="panel-header">
 				<button className="back-button" onClick={() => onBack('home')}>
                 	<ArrowLeft size={18}/>
@@ -44,29 +46,48 @@ export default function DecryptScreen({onBack}: Props){
             	<LockOpen color="rgb(96, 165, 250)" size={18}/>
 				<p className="header-title">Text Decryption</p>
         	</div>
-			<div>
-                <p>Decrypt your Message</p>
-                <button onClick={clear}>Clear All</button>
-            </div>
+
         	<div className="main-section">
-            	<label className="text-field-description">Text to Decrypt</label>
-            	<textarea
+				<div className="form-header">
+                	<p className="panel-title">Decrypt your Message</p>
+                	<button className="clear-button" onClick={clear}>Clear All</button>
+            	</div>
+
+            	<label className="field-label">
+					<Shield size={15}/>
+					Ciphertext to Decrypt
+				</label>
+            	<textarea className="input1"
                 	value={cipher}
                 	onChange={(e) => setCipher(e.target.value)}
                 	placeholder="Enter the text to decrypt..."
             	/>
-            	<label className="key-field">8-Digit Security Key</label>
-            	<input 
+
+            	<label className="field-label">
+					<Key size={15}/>
+					8-Digit Key
+				</label>
+            	<input className={"input2 " + (isValidKey ? "valid" : "")}
                 	value={key}
                 	placeholder="12345678"
                 	maxLength={8}
                 	onChange={(e) => setKey(e.target.value)}
             	/>
-            	<div>Enter exactly 8 digits</div>
-            	<button className="operation-button" onClick={handleDecrypt}>Decrypt Text</button>
-            	<div className="result">
-                	<div>Decrypted Text (Original)</div>
-                	<textarea
+            	<div className="warning"> <Shield size={12}/> Enter exactly 8 digits</div>
+
+				<button className={"operation-button " + (canDecrypt? "" : "disabled")} onClick={handleDecrypt} disabled={!canDecrypt}>
+                	<LockOpen size={20}/>
+                	Decrypt Text
+            	</button>
+
+				<hr className="divider"/>
+
+            	<div>
+                	<div className="field-label">
+						<CircleCheckBig size={15}/>
+						Decrypted Text (Original)
+					</div>
+                	<textarea className="input3"
                 		value={text}
                 		onChange={(e) => setText(e.target.value)}
                 		placeholder="Your decrypted text will appear here…"
