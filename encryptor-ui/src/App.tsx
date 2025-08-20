@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import './app.css'
+import './App.css'
 import OperationChooser from './components/OperationChooser'
 import EncryptScreen from './components/EncryptScreen'
 import DecryptScreen from './components/DecryptScreen'
@@ -10,10 +10,10 @@ function App() {
   const [view, setView] = useState<View>('home')
 
   return (
-    <div className="app">
-      <header className="app-header">
-        <div>Blowfish Encryptor</div>
-        <div>Secure text encryption and decryption using an 8-digit key and the Blowfish algorithm.</div>
+    <div>
+      <header className="top">
+        <h1 className="app-header">Blowfish Encryptor</h1>
+        <div className="app-desc">Secure text encryption and decryption using an 8-digit key and the Blowfish algorithm.</div>
       </header>
 
       <main>

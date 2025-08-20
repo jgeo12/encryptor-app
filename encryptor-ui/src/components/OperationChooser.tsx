@@ -1,4 +1,5 @@
 import './operation-chooser.css'
+import { Lock, LockOpen} from 'lucide-react'
 
 type Props = {
   onChoose: (mode: 'encrypt' | 'decrypt') => void;
@@ -7,20 +8,23 @@ type Props = {
 function OperationChooser({onChoose} : Props) {
   return (
     <div className="op-chooser">
-      <h2>Choose Operation</h2>
-      <p>What would you like to do today?</p>
+      <p className="op-prompt">Choose Operation</p>
       <button className="op-button" onClick={() => onChoose('encrypt')}>
-        <div>🔒</div>
-        <div>
-          <div>Encrypt text</div>
-          <div> Convert plain text to secure cipher</div>
+        <div className="button-container">
+          <Lock className="lock1"/>
+          <div className="button-txt">
+            <div>Encrypt text</div>
+            <div> Convert plain text to secure cipher</div>
+          </div>
         </div>
       </button>
       <button className="op-button" onClick={() => onChoose('decrypt')}>
-        <div>🔒</div>
-        <div>
-          <div>Decrypt text</div>
-          <div>Convert cipher back to plain text</div>
+        <div className="button-container">
+          <LockOpen className="lock1"/>
+          <div className="button-txt">
+            <div>Decrypt text</div>
+            <div>Convert cipher back to plain text</div>
+          </div>
         </div>
       </button>
     </div>

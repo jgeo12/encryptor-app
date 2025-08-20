@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { encryptText } from "../api";
+import { Lock, ArrowLeft, Key, Shield } from 'lucide-react'
+import './encrypt-decrypt-screen.css'
 
 type Props = { onBack: (mode: 'home') => void };
 
@@ -9,16 +11,14 @@ export default function EncryptScreen({onBack}: Props){
   const [key, setKey] = useState("")
   const [cipher, setCipher] = useState("")
   const isValidKey = /^\d{8}$/.test(key);
+  const hasText = text.trim().length > 0;
+  const canEncrypt = isValidKey && hasText;
 
   async function handleEncrypt(){
-    setCipher('')
-
-    if(!isValidKey){
+    if(!canEncrypt){
         return;
     }
-    if(!text.trim()){
-        return
-    }
+    setCipher('')
     try{
         const {ciphertext} = await encryptText(text, key)
         setCipher(ciphertext)
@@ -27,31 +27,64 @@ export default function EncryptScreen({onBack}: Props){
     }
   }
 
+  function clear(){
+    setText('')
+    setKey('')
+    setCipher('')
+  }
+
   return(
-    <>
+    <div className="encrypt-decrypt-screen">
+
         <div className="panel-header">
-			<button onClick={() => onBack('home')}>Back</button>
-			<h2>Text Encryption</h2>
+			<button className="back-button" onClick={() => onBack('home')}>
+                <ArrowLeft size={18}/>
+            </button>
+            <Lock color="rgb(96, 165, 250)" size={18}/>
+			<p className="header-title">Text Encryption</p>
         </div>
-        <div>
-            <label className="text-field-description">Text to Encrypt</label>
-            <textarea
+
+        <div className="main-section">
+            <div className="form-header">
+                <p className="panel-title">Encrypt your Message</p>
+                <button className="clear-button" onClick={clear}>Clear All</button>
+            </div>
+
+            <label className="field-label">
+                <Lock size={15}/>
+                Text to Encrypt
+            </label>
+            <textarea className="input1"
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 placeholder="Enter the text to encrypt..."
             />
-            <label className="key-field">8-Digit Security Key</label>
-            <input 
+
+            <label className="field-label">
+                <Key size={15}/>
+                8-Digit Key
+            </label>
+            <input className={"input2 " + (isValidKey ? "valid" : "")}
                 value={key}
                 placeholder="12345678"
                 maxLength={8}
                 onChange={(e) => setKey(e.target.value)}
             />
-            <div>Enter exactly 8 digits</div>
-            <button className="operation-button" onClick={handleEncrypt}>Encrypt Text</button>
-            <div className="result">
-                <div>Encrypted Text (Ciphertext)</div>
-                <textarea
+            <div className="warning"> <Shield size={12}/> Enter exactly 8 digits</div>
+
+            <button className={"operation-button " + (canEncrypt? "" : "disabled")} onClick={handleEncrypt} disabled={!canEncrypt}>
+                <Lock size={20}/>
+                Encrypt Text
+            </button>
+
+            <hr className="divider"/>
+
+            <div>
+                <div className="field-label">
+                    <Shield size={15}/>
+                    Encrypted Text (Ciphertext)
+                </div>
+                <textarea className="input3"
                 value={cipher}
                 onChange={(e) => setCipher(e.target.value)}
                 placeholder="Your encrypted text will appear here…"
@@ -59,6 +92,6 @@ export default function EncryptScreen({onBack}: Props){
                 />
             </div>
         </div>
-    </>
+    </div>
   )
 }
