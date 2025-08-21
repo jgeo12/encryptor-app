@@ -11,7 +11,7 @@
   align-items: center;
 }
 
-.op-prompt{
+.op-prompt {
   font-size: 22px;
   text-align: center;
   margin: 1rem 0 1.25rem;
@@ -33,14 +33,14 @@
   transition: transform .08s ease, box-shadow .15s ease, background-color .15s ease;
 }
 
-.button-container{
+.button-container {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 20px;
 }
 
-.button-txt{
+.button-txt {
   display: flex;
   flex-direction: column;
   text-align: left;
@@ -56,4 +56,8 @@
 .op-button:active {
   transform: translateY(0);
   box-shadow: 0 6px 16px rgba(29, 78, 216, .35);
+}
+
+.button-title {
+  font-weight: 700;
 }

@@ -13,7 +13,7 @@ function OperationChooser({onChoose} : Props) {
         <div className="button-container">
           <Lock className="lock1"/>
           <div className="button-txt">
-            <div>Encrypt text</div>
+            <div className="button-title">Encrypt text</div>
             <div> Convert plain text to secure cipher</div>
           </div>
         </div>
@@ -22,7 +22,7 @@ function OperationChooser({onChoose} : Props) {
         <div className="button-container">
           <LockOpen className="lock1"/>
           <div className="button-txt">
-            <div>Decrypt text</div>
+            <div className="button-title">Decrypt text</div>
             <div>Convert cipher back to plain text</div>
           </div>
         </div>
