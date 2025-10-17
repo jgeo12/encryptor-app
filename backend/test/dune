@@ -1,3 +1,4 @@
 (test
  (name test)
- (libraries ounit2 Encryptor))
+ (libraries ounit2 Encryptor)
+ (preprocess (pps bisect_ppx)))

@@ -3,3 +3,8 @@ encryptor-ui/dist/
 *.log
 backend/_build/
 backend/_opam/
+backend/_coverage/coverage.css
+backend/_coverage/coverage.js
+backend/_coverage/highlight.pack.js
+backend/_coverage/lib
+backend/_coverage/test
