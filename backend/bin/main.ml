@@ -88,11 +88,12 @@ let port =
   | None -> 8080
 
 let () =
-  Dream.run ~port @@ Dream.logger @@ cors_middleware
+  Dream.run ~interface:"0.0.0.0" ~port
+  @@ Dream.logger @@ cors_middleware
   @@ Dream.router
        [
-         Dream.options "/**" options_handler;
          Dream.get "/" (fun _ -> Dream.respond "ok");
+         Dream.options "/**" options_handler;
          Dream.post "/api/encrypt-text" encrypt_handler;
          Dream.post "/api/decrypt-text" decrypt_handler;
        ]
