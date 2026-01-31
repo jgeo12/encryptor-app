@@ -16,7 +16,6 @@ let allowed_origins =
   ]
 
 let cors_headers_for req =
-  (* Helpful when debugging: log exactly what Origin the browser sent *)
   let origin_opt = Dream.header req "Origin" in
   Dream.log "Origin header: %s"
     (match origin_opt with
@@ -84,11 +83,15 @@ let decrypt_handler req =
     respond_json ~status:`Bad_Request
       (`Assoc [ ("error", `String "Invalid JSON") ])
 
+let port =
+  match Sys.getenv_opt "PORT" with
+  | Some p -> int_of_string p
+  | None -> 8080
+
 let () =
-  Dream.run ~port:8080 @@ Dream.logger @@ cors_middleware
+  Dream.run ~port @@ Dream.logger @@ cors_middleware
   @@ Dream.router
        [
-         (* Must answer preflight requests *)
          Dream.options "/**" options_handler;
          Dream.post "/api/encrypt-text" encrypt_handler;
          Dream.post "/api/decrypt-text" decrypt_handler;
