@@ -1,0 +1,6 @@
+_build
+.git
+.gitignore
+*.opam
+.merlin
+.ocamlformat
