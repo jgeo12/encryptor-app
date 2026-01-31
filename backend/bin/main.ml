@@ -7,16 +7,16 @@ let json_of_body req = Dream.body req >|= Yojson.Safe.from_string
 let respond_json ?(status = `OK) j =
   Dream.json ~status (Yojson.Safe.to_string j)
 
-let add_cors r =
-  Dream.add_header r "Access-Control-Allow-Origin" "*";
-  Dream.add_header r "Access-Control-Allow-Headers" "Content-Type";
-  Dream.add_header r "Access-Control-Allow-Methods" "POST, OPTIONS";
-  r
-
-let cors_mw handler req =
-  match Dream.method_ req with
-  | `OPTIONS -> Dream.empty `No_Content |> Lwt.map add_cors
-  | _ -> handler req >|= add_cors
+let cors_handler inner_handler request =
+  let response = inner_handler request in
+  response >>= fun resp ->
+  Dream.add_header resp "Access-Control-Allow-Origin" "*";
+  Dream.add_header resp "Access-Control-Allow-Methods"
+    "GET, POST, PUT, DELETE, OPTIONS";
+  Dream.add_header resp "Access-Control-Allow-Headers"
+    "Content-Type, Authorization";
+  Dream.add_header resp "Access-Control-Max-Age" "86400";
+  Lwt.return resp
 
 let parse_key s =
   let is_digit c = c >= '0' && c <= '9' in
@@ -56,11 +56,10 @@ let decrypt_handler req =
       (`Assoc [ ("error", `String "Invalid JSON") ])
 
 let () =
-  Dream.run ~port:8080 @@ Dream.logger @@ cors_mw
+  Dream.run ~port:8080 @@ Dream.logger @@ cors_handler
   @@ Dream.router
        [
+         Dream.options "/**" (fun _ -> Dream.empty `No_Content);
          Dream.post "/api/encrypt-text" encrypt_handler;
          Dream.post "/api/decrypt-text" decrypt_handler;
-         Dream.options "/api/encrypt-text" (fun _ -> Dream.empty `No_Content);
-         Dream.options "/api/decrypt-text" (fun _ -> Dream.empty `No_Content);
        ]
