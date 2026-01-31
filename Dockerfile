@@ -7,10 +7,9 @@ RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
 	gcc \
 	make \
 	libc6-dev \
- && sudo rm -rf /var/lib/apt/lists/*
-
-RUN sudo chown -R opam:opam /app
-USER opam
+    libev-dev \
+    libgmp-dev \
+    pkg-config \
 
 RUN opam update \
  && opam install -y dune batteries dream yojson lwt
