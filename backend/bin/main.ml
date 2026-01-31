@@ -88,6 +88,9 @@ let port =
   | None -> 8080
 
 let () =
+  Dream.log "Starting server...";
+  Dream.log "PORT=%s"
+    (match Sys.getenv_opt "PORT" with Some p -> p | None -> "<none>");
   Dream.run ~interface:"0.0.0.0" ~port
   @@ Dream.logger @@ cors_middleware
   @@ Dream.router
@@ -97,3 +100,4 @@ let () =
          Dream.post "/api/encrypt-text" encrypt_handler;
          Dream.post "/api/decrypt-text" decrypt_handler;
        ]
+
