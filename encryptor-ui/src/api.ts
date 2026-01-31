@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:8080"
+const API_BASE = import.meta.env.API_URL || "http://localhost:8080"
 
 export async function encryptText(text : string, key: string){
     const res = await fetch(API_BASE + "/api/encrypt-text",{
