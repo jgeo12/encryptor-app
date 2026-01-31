@@ -17,7 +17,7 @@ RUN sudo chown -R opam:opam /app
 USER opam
 
 RUN opam update \
- && opam install -y dune batteries dream yojson lwt csv ounit2
+ && opam install -y dune batteries dream yojson lwt csv ounit2 bisect_ppx
 
 RUN opam exec -- dune build bin/main.exe
 
