@@ -9,6 +9,9 @@ RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
 	libc6-dev \
  && sudo rm -rf /var/lib/apt/lists/*
 
+RUN opam update \
+ && opam install -y dune
+
 RUN opam exec -- dune build bin/main.exe
 
 EXPOSE 8080
