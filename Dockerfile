@@ -13,7 +13,7 @@ RUN sudo chown -R opam:opam /app
 USER opam
 
 RUN opam update \
- && opam install -y dune
+ && opam install -y dune batteries dream yojson lwt
 
 RUN cd backend && opam exec -- dune build bin/main.exe
 
