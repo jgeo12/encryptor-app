@@ -7,16 +7,37 @@ let json_of_body req = Dream.body req >|= Yojson.Safe.from_string
 let respond_json ?(status = `OK) j =
   Dream.json ~status (Yojson.Safe.to_string j)
 
-let cors_handler inner_handler request =
-  let response = inner_handler request in
-  response >>= fun resp ->
-  Dream.add_header resp "Access-Control-Allow-Origin" "*";
-  Dream.add_header resp "Access-Control-Allow-Methods"
-    "GET, POST, PUT, DELETE, OPTIONS";
-  Dream.add_header resp "Access-Control-Allow-Headers"
-    "Content-Type, Authorization";
-  Dream.add_header resp "Access-Control-Max-Age" "86400";
-  Lwt.return resp
+let allowed_origins =
+  [ "http://localhost:5173"; "https://jg-encryptor.vercel.app" ]
+
+let cors_headers_for req =
+  match Dream.header req "Origin" with
+  | Some origin when List.mem origin allowed_origins ->
+      [
+        ("Access-Control-Allow-Origin", origin);
+        ("Vary", "Origin");
+        ("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        ("Access-Control-Allow-Headers", "Content-Type, Authorization");
+        ("Access-Control-Max-Age", "86400");
+      ]
+  | _ ->
+      [
+        ("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        ("Access-Control-Allow-Headers", "Content-Type, Authorization");
+        ("Access-Control-Max-Age", "86400");
+      ]
+
+let cors_middleware inner_handler req =
+  inner_handler req >|= fun resp ->
+  let headers = cors_headers_for req in
+  List.fold_left
+    (fun r (k, v) ->
+      Dream.add_header r k v;
+      r)
+    resp headers
+
+let options_handler req =
+  Dream.respond ~status:`No_Content ~headers:(cors_headers_for req) ""
 
 let parse_key s =
   let is_digit c = c >= '0' && c <= '9' in
@@ -56,10 +77,10 @@ let decrypt_handler req =
       (`Assoc [ ("error", `String "Invalid JSON") ])
 
 let () =
-  Dream.run ~port:8080 @@ Dream.logger @@ cors_handler
+  Dream.run ~port:8080 @@ Dream.logger @@ cors_middleware
   @@ Dream.router
        [
-         Dream.options "/**" (fun _ -> Dream.empty `No_Content);
+         Dream.options "/**" options_handler;
          Dream.post "/api/encrypt-text" encrypt_handler;
          Dream.post "/api/decrypt-text" decrypt_handler;
        ]
