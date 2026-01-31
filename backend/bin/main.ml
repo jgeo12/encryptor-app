@@ -8,7 +8,12 @@ let respond_json ?(status = `OK) j =
   Dream.json ~status (Yojson.Safe.to_string j)
 
 let allowed_origins =
-  [ "http://localhost:5173"; "https://jg-encryptor.vercel.app" ]
+  [
+    "http://localhost:5173";
+    "https://jg-encryptor.vercel.app";
+    "https://jg-encryptor-git-main-joshuas-projects-7f252398.vercel.app";
+    "https://jg-encryptor-d8ogqxv9x-joshuas-projects-7f252398.vercel.app";
+  ]
 
 let cors_headers_for req =
   match Dream.header req "Origin" with
