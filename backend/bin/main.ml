@@ -18,9 +18,7 @@ let allowed_origins =
 let cors_headers_for req =
   let origin_opt = Dream.header req "Origin" in
   Dream.log "Origin header: %s"
-    (match origin_opt with
-    | Some o -> o
-    | None -> "<none>");
+    (match origin_opt with Some o -> o | None -> "<none>");
   match origin_opt with
   | Some origin when List.mem origin allowed_origins ->
       [
@@ -88,9 +86,7 @@ let port =
   | None -> 8080
 
 let () =
-  Dream.log "Starting server...";
-  Dream.log "PORT=%s"
-    (match Sys.getenv_opt "PORT" with Some p -> p | None -> "<none>");
+  Printf.printf "Starting Dream server on PORT=%d\n%!" port;
   Dream.run ~interface:"0.0.0.0" ~port
   @@ Dream.logger @@ cors_middleware
   @@ Dream.router
@@ -100,4 +96,3 @@ let () =
          Dream.post "/api/encrypt-text" encrypt_handler;
          Dream.post "/api/decrypt-text" decrypt_handler;
        ]
-

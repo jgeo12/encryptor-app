@@ -21,5 +21,4 @@ RUN opam update \
 
 RUN cd backend && opam exec -- dune build bin/main.exe
 
-EXPOSE 8080
 CMD ["./backend/_build/default/bin/main.exe"]
