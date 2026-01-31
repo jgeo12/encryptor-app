@@ -16,7 +16,13 @@ let allowed_origins =
   ]
 
 let cors_headers_for req =
-  match Dream.header req "Origin" with
+  (* Helpful when debugging: log exactly what Origin the browser sent *)
+  let origin_opt = Dream.header req "Origin" in
+  Dream.log "Origin header: %s"
+    (match origin_opt with
+    | Some o -> o
+    | None -> "<none>");
+  match origin_opt with
   | Some origin when List.mem origin allowed_origins ->
       [
         ("Access-Control-Allow-Origin", origin);
@@ -34,12 +40,9 @@ let cors_headers_for req =
 
 let cors_middleware inner_handler req =
   inner_handler req >|= fun resp ->
-  let headers = cors_headers_for req in
-  List.fold_left
-    (fun r (k, v) ->
-      Dream.add_header r k v;
-      r)
-    resp headers
+  cors_headers_for req
+  |> List.iter (fun (k, v) -> Dream.add_header resp k v);
+  resp
 
 let options_handler req =
   Dream.respond ~status:`No_Content ~headers:(cors_headers_for req) ""
@@ -85,6 +88,7 @@ let () =
   Dream.run ~port:8080 @@ Dream.logger @@ cors_middleware
   @@ Dream.router
        [
+         (* Must answer preflight requests *)
          Dream.options "/**" options_handler;
          Dream.post "/api/encrypt-text" encrypt_handler;
          Dream.post "/api/decrypt-text" decrypt_handler;
