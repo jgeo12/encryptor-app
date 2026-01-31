@@ -9,6 +9,7 @@ RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
 	libc6-dev \
 	libev-dev \
 	libgmp-dev \
+	libssl-dev \
 	pkg-config \
  && sudo rm -rf /var/lib/apt/lists/*
 
