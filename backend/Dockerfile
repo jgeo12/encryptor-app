@@ -9,6 +9,9 @@ RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
 	libc6-dev \
  && sudo rm -rf /var/lib/apt/lists/*
 
+RUN sudo chown -R opam:opam /app
+USER opam
+
 RUN opam update \
  && opam install -y dune
 
