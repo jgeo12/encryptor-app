@@ -39,8 +39,7 @@ let cors_headers_for req =
 
 let cors_middleware inner_handler req =
   inner_handler req >|= fun resp ->
-  cors_headers_for req
-  |> List.iter (fun (k, v) -> Dream.add_header resp k v);
+  cors_headers_for req |> List.iter (fun (k, v) -> Dream.add_header resp k v);
   resp
 
 let options_handler req =
@@ -93,6 +92,7 @@ let () =
   @@ Dream.router
        [
          Dream.options "/**" options_handler;
+         Dream.get "/" (fun _ -> Dream.respond "ok");
          Dream.post "/api/encrypt-text" encrypt_handler;
          Dream.post "/api/decrypt-text" decrypt_handler;
        ]
