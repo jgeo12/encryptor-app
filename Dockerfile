@@ -19,7 +19,7 @@ USER opam
 RUN opam update \
  && opam install -y dune batteries dream yojson lwt csv ounit2 bisect_ppx
 
-RUN opam exec -- dune build bin/main.exe \
+RUN cd backend && opam exec -- dune build bin/main.exe \
  && ls -la _build/default/bin/main.exe
 
-CMD ["bash", "-lc", "echo RUNNING PORT=$PORT; opam exec -- ./_build/default/bin/main.exe"]
+CMD ["bash", "-lc", "echo RUNNING PORT=$PORT; opam exec -- ./backend/_build/default/bin/main.exe"]
