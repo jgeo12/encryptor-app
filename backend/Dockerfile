@@ -22,4 +22,4 @@ RUN opam update \
 RUN opam exec -- dune build bin/main.exe \
  && ls -la _build/default/bin/main.exe
 
-CMD ["bash", "-lc", "echo RUNNING PORT=$PORT; opam exec -- ./_build/default/bin/main.exe"]
+CMD ["bash", "-lc", "echo RUNNING PORT=$PORT; opam exec -- ./_build/default/bin/main.exe; echo EXIT_CODE=$?"]
