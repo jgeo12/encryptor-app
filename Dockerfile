@@ -4,13 +4,7 @@ WORKDIR /app
 COPY . .
 
 RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
-	gcc \
-	make \
-	libc6-dev \
-	libev-dev \
-	libgmp-dev \
-	libssl-dev \
-	pkg-config \
+  gcc make libc6-dev libev-dev libgmp-dev libssl-dev pkg-config iproute2 \
  && sudo rm -rf /var/lib/apt/lists/*
 
 RUN sudo chown -R opam:opam /app
@@ -19,7 +13,7 @@ USER opam
 RUN opam update \
  && opam install -y dune batteries dream yojson lwt csv ounit2 bisect_ppx
 
-RUN cd backend && opam exec -- dune build bin/main.exe \
+RUN cd backend && opam exec -- dune clean && opam exec -- dune build bin/main.exe \
  && ls -la _build/default/bin/main.exe
 
-CMD ["bash", "-lc", "echo RUNNING PORT=$PORT; opam exec -- ./backend/_build/default/bin/main.exe; echo EXIT_CODE=$?"]
+CMD ["bash", "-lc", "echo RUNNING PORT=$PORT; opam exec -- ./backend/_build/default/bin/main.exe & sleep 1; echo LISTENING:; ss -ltnp; wait"]
