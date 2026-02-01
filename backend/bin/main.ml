@@ -2,10 +2,14 @@ open Lwt.Infix
 open Dream
 open Yojson
 
+(* -------- helpers -------- *)
+
 let json_of_body req = Dream.body req >|= Yojson.Safe.from_string
 
 let respond_json ?(status = `OK) j =
   Dream.json ~status (Yojson.Safe.to_string j)
+
+(* -------- CORS -------- *)
 
 let allowed_origins =
   [
@@ -42,13 +46,17 @@ let cors_middleware inner_handler req =
   cors_headers_for req |> List.iter (fun (k, v) -> Dream.add_header resp k v);
   resp
 
-let options_handler req =
-  Dream.respond ~status:`No_Content ~headers:(cors_headers_for req) ""
+(* IMPORTANT: do NOT add headers here, middleware will add them once *)
+let options_handler _req = Dream.respond ~status:`No_Content ""
+
+(* -------- validation -------- *)
 
 let parse_key s =
   let is_digit c = c >= '0' && c <= '9' in
   if String.length s = 8 && String.for_all is_digit s then Ok (int_of_string s)
   else Error "Key must be exactly 8 numeric digits"
+
+(* -------- handlers -------- *)
 
 let encrypt_handler req =
   json_of_body req >>= fun j ->
@@ -81,6 +89,8 @@ let decrypt_handler req =
   with _ ->
     respond_json ~status:`Bad_Request
       (`Assoc [ ("error", `String "Invalid JSON") ])
+
+(* -------- app -------- *)
 
 let port =
   match Sys.getenv_opt "PORT" with
