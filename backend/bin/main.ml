@@ -18,7 +18,9 @@ let allowed_origins =
 let cors_headers_for req =
   let origin_opt = Dream.header req "Origin" in
   Dream.log "Origin header: %s"
-    (match origin_opt with Some o -> o | None -> "<none>");
+    (match origin_opt with
+    | Some o -> o
+    | None -> "<none>");
   match origin_opt with
   | Some origin when List.mem origin allowed_origins ->
       [
@@ -87,6 +89,7 @@ let port =
 
 let () =
   Printf.printf "Starting Dream server on PORT=%d\n%!" port;
+  Printf.printf "About to call Dream.run on port=%d\n%!" port;
   Dream.run ~interface:"0.0.0.0" ~port
   @@ Dream.logger @@ cors_middleware
   @@ Dream.router
