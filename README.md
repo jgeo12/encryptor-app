@@ -8,39 +8,33 @@ https://groups.csail.mit.edu/cag/pub/dm/papers/schneier:blowfish.html
 ## Encryption / Decryption Flow
 
 ```mermaid
-flowchart TD
+flowchart TB
     subgraph ENC[Encryption]
-        direction LR
+        direction TB
         A[Plaintext input] --> B[Split into 8-character chunks]
         B --> C[Convert each chunk to 64-bit binary]
         C --> D[Pad final chunk to 64 bits if needed]
         D --> E[Apply Blowfish-based block encryption]
         E --> F[Append 32-bit padding length]
         F --> G[Concatenate encrypted 96-bit blocks]
+        G --> H[Ciphertext output]
     end
-
-    G --> H[Ciphertext output]
 
     subgraph DEC[Decryption]
-        direction LR
-        I[Split ciphertext into 96-bit blocks]
-        I --> J[Split into 64-bit ciphertext + 32-bit padding length]
-        J --> K[Apply Blowfish-based block decryption]
-        K --> L[Remove padding using stored padding length]
-        L --> M[Convert binary back to text]
-        M --> N[Concatenate decrypted chunks]
-        N --> O[Plaintext restored]
+        direction TB
+        I[Ciphertext input] --> J[Split ciphertext into 96-bit blocks]
+        J --> K[Split each block into ciphertext + padding length]
+        K --> L[Apply Blowfish-based block decryption]
+        L --> M[Remove padding using stored padding length]
+        M --> N[Convert binary back to text]
+        N --> O[Concatenate decrypted chunks]
+        O --> P[Plaintext restored]
     end
 
-    H --> I
-
-    classDef enc fill:#dff4ff,stroke:#2563eb,stroke-width:1.5px,color:#0f172a;
-    classDef dec fill:#e7f8e8,stroke:#2f855a,stroke-width:1.5px,color:#0f172a;
-    classDef boundary fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a;
-
-    class A,B,C,D,E,F,G enc;
-    class H boundary;
-    class I,J,K,L,M,N,O dec;
+    classDef enc fill:#e0f2fe,stroke:#2563eb,stroke-width:1px,color:#0f172a;
+    classDef dec fill:#ecfdf5,stroke:#16a34a,stroke-width:1px,color:#0f172a;
+    class A,B,C,D,E,F,G,H enc;
+    class I,J,K,L,M,N,O,P dec;
 ```
 
 ## Repository layout
