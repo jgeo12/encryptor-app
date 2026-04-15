@@ -24,9 +24,13 @@ export default function DecryptScreen({onBack}: Props){
 		}
 		try{
 			const {text} = await decryptText(cipher, key)
+			if(!text.trim()){
+				alert("Check your key and /or ciphertext")
+				return
+			}
 			setText(text)
-		} catch (e){
-			alert("error occurred")
+		} catch {
+			alert("Check your key and /or ciphertext")
 		}
 	  }
 
