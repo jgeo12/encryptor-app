@@ -2,6 +2,8 @@
 
 Project implementing a Blowfish-based encryptor inspired by the original paper, with a small simplification in my implementation.
 
+Live app: **https://jg-encryptor.vercel.app/**
+
 For detailed information on the Blowfish encryption algorithm, see the original paper:
 https://groups.csail.mit.edu/cag/pub/dm/papers/schneier:blowfish.html
 
@@ -27,6 +29,3 @@ https://groups.csail.mit.edu/cag/pub/dm/papers/schneier:blowfish.html
   - `test/` — OCaml test cases.
 - `encryptor-ui/` — React frontend in TypeScript.
   - `src/` — React component code.
-
-## Hosted Application
-Live app: **https://jg-encryptor.vercel.app/**
