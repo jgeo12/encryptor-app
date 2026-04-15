@@ -31,6 +31,8 @@ flowchart LR
         O --> P[Plaintext restored]
     end
 
+    H -.-> I
+
     classDef enc fill:#e0f2fe,stroke:#2563eb,stroke-width:1px,color:#0f172a;
     classDef dec fill:#ecfdf5,stroke:#16a34a,stroke-width:1px,color:#0f172a;
     class A,B,C,D,E,F,G,H enc;
