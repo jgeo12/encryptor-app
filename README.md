@@ -13,4 +13,4 @@ Project implementing a Blowfish-based (encryption algorithm) encryptor with an O
   - `src/` — React component code.
 
 ## Hosted Application
-The app is deployed and available at: **https://jg-encryptor.vercel.app/**
+Live app: **https://jg-encryptor.vercel.app/**
