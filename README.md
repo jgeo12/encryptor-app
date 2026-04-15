@@ -7,37 +7,16 @@ https://groups.csail.mit.edu/cag/pub/dm/papers/schneier:blowfish.html
 
 ## Encryption / Decryption Flow
 
-```mermaid
-flowchart LR
-    subgraph ENC[Encryption]
-        direction TB
-        A[Plaintext input] --> B[Split into 8-character chunks]
-        B --> C[Convert each chunk to binary]
-        C --> D[Pad final chunk to 64 bits if needed]
-        D --> E[Apply Blowfish-based block encryption]
-        E --> F[Append 32-bit padding length]
-        F --> G[Concatenate encrypted 96-bit blocks]
-        G --> H[Ciphertext output]
-    end
-
-    subgraph DEC[Decryption]
-        direction TB
-        I[Ciphertext input] --> J[Split ciphertext into 96-bit blocks]
-        J --> K[Split each 96-bit block into 64-bit ciphertext + 32-bit padding length]
-        K --> L[Apply Blowfish-based block decryption]
-        L --> M[Remove padding using stored padding length]
-        M --> N[Convert binary back to text]
-        N --> O[Concatenate decrypted chunks]
-        O --> P[Plaintext restored]
-    end
-
-    H -.-> I
-
-    classDef enc fill:#e0f2fe,stroke:#2563eb,stroke-width:1px,color:#0f172a;
-    classDef dec fill:#ecfdf5,stroke:#16a34a,stroke-width:1px,color:#0f172a;
-    class A,B,C,D,E,F,G,H enc;
-    class I,J,K,L,M,N,O,P dec;
-```
+| Encryption | Decryption |
+| --- | --- |
+| `1.` Plaintext input | `1.` Ciphertext input |
+| `2.` Split into 8-character chunks | `2.` Split ciphertext into 96-bit blocks |
+| `3.` Convert each chunk to binary | `3.` Split each 96-bit block into 64-bit ciphertext + 32-bit padding length |
+| `4.` Pad the final chunk to 64 bits if needed | `4.` Apply Blowfish-based block decryption |
+| `5.` Apply Blowfish-based block encryption | `5.` Remove padding using the stored padding length |
+| `6.` Append 32-bit padding length | `6.` Convert binary back to text |
+| `7.` Concatenate encrypted 96-bit blocks | `7.` Concatenate decrypted chunks |
+| `8.` Ciphertext output | `8.` Plaintext restored |
 
 ## Repository layout
 
