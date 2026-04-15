@@ -8,9 +8,9 @@ https://groups.csail.mit.edu/cag/pub/dm/papers/schneier:blowfish.html
 ## Encryption / Decryption Flow
 
 ```mermaid
-flowchart LR
+flowchart TD
     subgraph ENC[Encryption]
-        direction TB
+        direction LR
         A[Plaintext input] --> B[Split into 8-character chunks]
         B --> C[Convert each chunk to 64-bit binary]
         C --> D[Pad final chunk to 64 bits if needed]
@@ -22,7 +22,7 @@ flowchart LR
     G --> H[Ciphertext output]
 
     subgraph DEC[Decryption]
-        direction TB
+        direction LR
         I[Split ciphertext into 96-bit blocks]
         I --> J[Split into 64-bit ciphertext + 32-bit padding length]
         J --> K[Apply Blowfish-based block decryption]
