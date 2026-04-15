@@ -2,6 +2,9 @@
 
 Project implementing a Blowfish-based (encryption algorithm) encryptor with an OCaml backend and a React frontend.
 
+For detailed information on the Blowfish encryption algorithm, see the original paper:
+https://groups.csail.mit.edu/cag/pub/dm/papers/schneier:blowfish.html
+
 ## Repository layout
 
 - `backend/` — Blowfish implementation in OCaml.
@@ -13,4 +16,4 @@ Project implementing a Blowfish-based (encryption algorithm) encryptor with an O
   - `src/` — React component code.
 
 ## Hosted Application
-Live app: **https://jg-encryptor.vercel.app/**
+The app is deployed and available at: **https://jg-encryptor.vercel.app/**
