@@ -16,4 +16,4 @@ https://groups.csail.mit.edu/cag/pub/dm/papers/schneier:blowfish.html
   - `src/` — React component code.
 
 ## Hosted Application
-The app is deployed and available at: **https://jg-encryptor.vercel.app/**
+Live app: **https://jg-encryptor.vercel.app/**
