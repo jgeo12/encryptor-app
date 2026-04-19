@@ -27,5 +27,5 @@ https://groups.csail.mit.edu/cag/pub/dm/papers/schneier:blowfish.html
   - `lib/` — Blowfish implementation code.
   - `data/` — Files of constants used by the Blowfish algorithm.
   - `test/` — OCaml test cases.
-- `encryptor-ui/` — React frontend in TypeScript.
+- `encryptor-ui/` — React frontend.
   - `src/` — React component code.
